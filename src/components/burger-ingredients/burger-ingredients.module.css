@@ -1,0 +1,15 @@
+.section{
+    width: 600px;
+    height: 800px;
+    position: relative;
+    left:150px;
+    background: #131316;
+    border: 2px solid #4C4CFF;
+}
+
+.title {
+    color: #F2F2F3;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+}

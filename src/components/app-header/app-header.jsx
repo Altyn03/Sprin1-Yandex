@@ -15,8 +15,10 @@ const AppHeader = (props) => {
                         <ListIcon className={style.NavBarMenuItemIcon} type="primary"/>
                         <span className={style.NavBarMenuItemText}>Лента заказов</span>
                     </div>
-                </div>    
-                <Logo className={style.logo}/>
+                </div>
+                <div className={style.logo}>
+                    <Logo />
+                </div>      
                 <div className={style.NavBarMenuItem}>
                         <ProfileIcon className={style.NavBarMenuItemIcon} type="primary"/>
                         <span className={style.NavBarMenuItemText}>Личный кабинет</span>
