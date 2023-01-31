@@ -1,0 +1,44 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 750px;
+  margin: 100px 0 50px 0;
+}
+
+.constructor {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.constructor::-webkit-scrollbar {
+  width: 10px;
+}
+
+.constructor::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+.constructor::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.orderInfo {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.price {
+  margin-right: 40px;
+}
+
+.button {
+  margin-right: 20px;
+}

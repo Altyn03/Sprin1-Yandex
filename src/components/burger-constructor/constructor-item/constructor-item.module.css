@@ -1,0 +1,12 @@
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 10px;
+}
+
+.MainItem {
+  margin-left: 45px;
+  position: sticky;
+}

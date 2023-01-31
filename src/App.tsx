@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import AppHeader from './components/app-header/app-header';
 import BurgerIngredients from './components/burger-ingredients/burger-ingredients';
+import BurgerConstructor from './components/burger-constructor/burger-constructor';
 import style from './App.module.css'
+
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -24,8 +26,9 @@ function App() {
         <AppHeader />
           <main className={style.main}>
             <BurgerIngredients data={state} setCart={setCart}/>
+            <BurgerConstructor data={state} cart={cart}/>
           </main>
-      </> : <div></div>
+      </> : <div>Сервер по не понятным причинам не работает</div>
     );
 }
 
