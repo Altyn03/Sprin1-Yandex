@@ -1,88 +1,77 @@
-import React from "react";
 import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { useState } from "react";
 import ConstructorItem from "./constructor-item/constructor-item";
 import style from "./burger-constructor.module.css";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 
 const BurgerConstructor = (props) => {
-  const data = [
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-      isLocked: true,
-      type: "top",
-    },
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    },
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    },
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    },
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    },
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    },
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    },
-    {
-      text: "Краторная булка N-200i (верх)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-    },
-    {
-      text: "Краторная булка N-200i (низ)",
-      price: 200,
-      thumbnail: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-      isLocked: true,
-      type: "bottom",
-    },
-  ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
-    <div className={style.section}>
-      <div className={style.constructor}>
-        {data.map((i) => (
-          <ConstructorItem
-            type={i.type}
-            isLocked={i.isLocked}
-            text={i.text}
-            price={i.price}
-            thumbnail={i.thumbnail}
-          />
-        ))}
+    <section className={`${style.constructor} pl-10 pb-10 pt-25`}>
+      {isModalOpen && (
+        <Modal setIsModalOpen={setIsModalOpen}>
+          <OrderDetails />
+        </Modal>
+      )}
+      <div className="mb-4">
+        <ConstructorItem
+          isLocked={true}
+          type="top"
+          text="Краторная булка N-200i (верх)"
+          price={200}
+          thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
+        />
       </div>
-      <div className={style.orderInfo}>
-        <div className={style.price}>
-          <span className="text text_type_digits-medium">610 </span>
+      <div className={style.constructorList}>
+        {props.constructorData.length ? (
+          props.constructorData.map((i) => (
+            <ConstructorItem
+              key={i.id}
+              id={i.id}
+              text={i.name}
+              price={i.price}
+              thumbnail={i.thumbnail}
+              setConstructorData={props.setConstructorData}
+              constructorData={props.constructorData}
+            />
+          ))
+        ) : (
+          <span>Добавте товар</span>
+        )}
+      </div>
+      <div className="mt-4">
+        <ConstructorItem
+          type="bottom"
+          isLocked={true}
+          text="Краторная булка N-200i (низ)"
+          price={200}
+          thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
+        />
+      </div>
+      <div className={`${style.order} mt-10`}>
+        <div className={`${style.totalPrice} mr-10`}>
+          <span className="text text_type_digits-medium">
+            {props.constructorData.reduce((acc, b) => acc + b.price, 0)}
+          </span>
           <CurrencyIcon type="primary" />
         </div>
-        <div className={style.button}>
-          <Button htmlType="button" type="primary" size="large">
-            Оформить заказ
-          </Button>
-        </div>
+        <Button
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+          htmlType="button"
+          type="primary"
+          size="large"
+        >
+          Оформить заказ
+        </Button>
       </div>
-    </div>
+    </section>
   );
 };
 
