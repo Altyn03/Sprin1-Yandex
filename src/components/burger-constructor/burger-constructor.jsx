@@ -2,14 +2,23 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ConstructorItem from "./constructor-item/constructor-item";
 import style from "./burger-constructor.module.css";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+import { BurgerConstructorContext } from "../../services/burger-constructor-context";
 
 const BurgerConstructor = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { constructorData, setConstructorData } = useContext(
+    BurgerConstructorContext
+  );
+  const [bun, setBun] = useState({});
+
+  useEffect(() => {
+    setBun(constructorData.filter((i) => i.isBun === true)[0]);
+  }, [constructorData]);
 
   return (
     <section className={`${style.constructor} pl-10 pb-10 pt-25`}>
@@ -18,45 +27,51 @@ const BurgerConstructor = (props) => {
           <OrderDetails />
         </Modal>
       )}
-      <div className="mb-4">
-        <ConstructorItem
-          isLocked={true}
-          type="top"
-          text="Краторная булка N-200i (верх)"
-          price={200}
-          thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-        />
-      </div>
-      <div className={style.constructorList}>
-        {props.constructorData.length ? (
-          props.constructorData.map((i) => (
+      {constructorData.length && Object.keys(bun).length ? (
+        <>
+          <div className="mb-4">
             <ConstructorItem
-              key={i.id}
-              id={i.id}
-              text={i.name}
-              price={i.price}
-              thumbnail={i.thumbnail}
-              setConstructorData={props.setConstructorData}
-              constructorData={props.constructorData}
+              isLocked={true}
+              type="top"
+              text={bun.name}
+              price={bun.price}
+              thumbnail={bun.thumbnail}
             />
-          ))
-        ) : (
-          <span>Добавте товар</span>
-        )}
-      </div>
-      <div className="mt-4">
-        <ConstructorItem
-          type="bottom"
-          isLocked={true}
-          text="Краторная булка N-200i (низ)"
-          price={200}
-          thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-        />
-      </div>
+          </div>
+          <div className={style.constructorList}>
+            {constructorData.map((i) => {
+              if (!i.isBun)
+                return (
+                  <ConstructorItem
+                    key={i.id}
+                    id={i.id}
+                    text={i.name}
+                    price={i.price}
+                    thumbnail={i.thumbnail}
+                    setConstructorData={setConstructorData}
+                    constructorData={constructorData}
+                  />
+                );
+              else return null;
+            })}
+          </div>
+          <div className="mt-4">
+            <ConstructorItem
+              type="bottom"
+              isLocked={true}
+              text={bun.name}
+              price={bun.price}
+              thumbnail={bun.thumbnail}
+            />
+          </div>
+        </>
+      ) : (
+        <span>Добавте товар</span>
+      )}
       <div className={`${style.order} mt-10`}>
         <div className={`${style.totalPrice} mr-10`}>
           <span className="text text_type_digits-medium">
-            {props.constructorData.reduce((acc, b) => acc + b.price, 0)}
+            {constructorData.reduce((acc, b) => acc + b.price, 0)}
           </span>
           <CurrencyIcon type="primary" />
         </div>

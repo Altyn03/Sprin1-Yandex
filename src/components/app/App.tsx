@@ -3,41 +3,10 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import style from "./App.module.css";
+import { BurgerConstructorContext } from "../../services/burger-constructor-context";
 
 function App() {
-  const [constructorData, setConstructorData] = useState([
-    {
-      id: 0,
-      name: "Филе Люминесцентного тетраодонтимформа",
-      price: 988,
-      thumbnail: "https://code.s3.yandex.net/react/code/meat-03.png",
-    },
-    {
-      id: 1,
-      name: "Мясо бессмертных моллюсков Protostomia",
-      price: 1337,
-      thumbnail: "https://code.s3.yandex.net/react/code/meat-02.png",
-    },
-    {
-      id: 2,
-      name: "Филе Люминесцентного тетраодонтимформа",
-      price: 988,
-      thumbnail: "https://code.s3.yandex.net/react/code/meat-03.png",
-    },
-    {
-      id: 3,
-      name: "Мясо бессмертных моллюсков Protostomia",
-      price: 1337,
-      thumbnail: "https://code.s3.yandex.net/react/code/meat-02.png",
-    },
-    {
-      id: 4,
-      name: "Филе Люминесцентного тетраодонтимформа",
-      price: 988,
-      thumbnail: "https://code.s3.yandex.net/react/code/meat-03.png",
-    },
-  ]);
-
+  const [constructorData, setConstructorData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [state, setState] = useState([]);
 
@@ -49,6 +18,20 @@ function App() {
         .then((res) => res.json())
         .then((res) => {
           setState(res["data"]);
+          return res;
+        })
+        .then((res) => {
+          setConstructorData(
+            res["data"].map((i: any) => {
+              return {
+                id: i._id,
+                name: i.name,
+                price: i.price,
+                thumbnail: i.image,
+                isBun: i.type === "bun" ? true : false,
+              };
+            })
+          );
           setIsFetching(false);
         });
     } catch {
@@ -61,7 +44,11 @@ function App() {
       <AppHeader className={style.header} />
       <main className={style.main}>
         <BurgerIngredients data={state} constructorData={constructorData} />
-        <BurgerConstructor constructorData={constructorData} />
+        <BurgerConstructorContext.Provider
+          value={{ constructorData, setConstructorData }}
+        >
+          <BurgerConstructor />
+        </BurgerConstructorContext.Provider>
       </main>
     </>
   ) : (
